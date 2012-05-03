@@ -6,6 +6,10 @@ body {
   background: #cff;
 }
 
+body.centerscreen {
+  float: center;
+}
+
 header {
   padding-top: 20px;
 }
