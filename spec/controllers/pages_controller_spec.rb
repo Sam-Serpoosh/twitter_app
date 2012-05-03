@@ -18,7 +18,7 @@ describe PagesController do
 
     it "should have a 'Home' header" do 
       get 'home'
-      response.should have_selector("h1", :content => "Home")
+      response.should have_selector("h1", :content => "Sample App")
     end 
 
     it "should have a non-blank body" do
