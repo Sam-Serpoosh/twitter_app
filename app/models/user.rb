@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  include PasswordEncryption
 
   attr_accessor :password
   attr_accessible :name, :email, :password, :password_confirmation
@@ -17,16 +18,5 @@ class User < ActiveRecord::Base
     :length => { :within => 6..40 }
 
   before_save :encrypt_password
-
-
-  private
-
-  def encrypt_password
-    self.encrypted_password = encrypt(password)
-  end
-
-  def encrypt(str)
-    str # Not the final implementation
-  end
 
 end
