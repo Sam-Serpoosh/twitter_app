@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   include PasswordEncryption
+  include UserAuthentication
 
   attr_accessor :password
   attr_accessible :name, :email, :password, :password_confirmation
@@ -17,6 +18,22 @@ class User < ActiveRecord::Base
     :confirmation => true,
     :length => { :within => 6..40 }
 
-  before_save :encrypt_password
+  before_save :encryption_of_password
+
+  def self.authenticate(email, submitted_password)
+    user = find_by_email(email)
+    UserAuthentication.authenticate(user, submitted_password)
+  end
+
+  def password_match?(submitted_password)
+    self.encrypted_password == encrypt(submitted_password)
+  end
+
+  private
+
+  def encryption_of_password
+    self.salt = make_salt if new_record?
+    encrypt_password
+  end
 
 end
