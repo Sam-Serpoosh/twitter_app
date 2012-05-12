@@ -139,3 +139,47 @@ td.sidebar {
 div.field, div.actions {
   margin-bottom: 10px;
 }
+
+/* Error Messages */
+
+.field_with_errors {
+  margin-top: 10px;
+  padding: 2px;
+  background-color: red;
+  display: table;
+}
+
+.field_with_errors label {
+  color: #fff;
+}
+
+#error_explanation {
+  width: 400px;
+  border: 2px solid red;
+  padding: 7px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+
+#error_explanation p {
+  color: #333;
+  margin-bottom: 0;
+  padding: 5px;
+}
+
+#error_explanation ul li {
+  font-size: 16px;
+  list-style: square;
+}
+
+/* flash */
+
+.success {
+  padding: 0.8em;
+  margin-bottom: 1em;
+  border: 2px solid #ddd;
+  background: #E6EFC2;
+  color: #264409;
+  border-color: #C6D880;
+}
