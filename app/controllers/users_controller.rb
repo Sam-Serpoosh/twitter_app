@@ -13,7 +13,7 @@ class UsersController < ApplicationController
   def create
     @user = User.new(params[:user])
     if @user.save
-      flash[:success] = "Welcome to the Twitter App!"
+      flash[:success] = "Welcome to the Twitter App!" #flash remains only for one request and redirect is a request
       redirect_to user_path(@user)
     else
       @title = "Sign up"
