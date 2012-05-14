@@ -22,6 +22,13 @@ module SessionsHelper
     current_user = nil
   end
 
+  def authenticate
+    if !signed_in?
+      flash[:notice] = "Please sign in to access this page"
+      redirect_to signin_path
+    end
+  end
+
   private
 
   def user_from_remember_token

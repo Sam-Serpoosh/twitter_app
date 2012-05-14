@@ -39,7 +39,7 @@ describe UsersController do
     it "should have the right URL" do
       get :show, :id => @user
       response.should have_selector("td>a", :content => user_path(@user),
-                                            :href => user_path(@user))
+                                    :href => user_path(@user))
     end
 
   end
@@ -64,7 +64,7 @@ describe UsersController do
 
       before do
         @attr = { :name => "", :email => "", :password => "", 
-                  :password_confirmation => "" }
+          :password_confirmation => "" }
       end
 
       it "should have the right title" do
@@ -89,7 +89,7 @@ describe UsersController do
 
       before do
         @attr = { :name => "New User", :email => "user@example.com", 
-                  :password => "foobar", :password_confirmation => "foobar" }
+          :password => "foobar", :password_confirmation => "foobar" }
       end
 
       it "should create a user" do
@@ -118,7 +118,7 @@ describe UsersController do
   end
 
   describe "GET 'edit'" do
-    
+
     before do 
       @user = Factory(:user)
       test_sign_in(@user)
@@ -137,7 +137,7 @@ describe UsersController do
     it "should have a link to change gravatar" do
       get :edit, :id => @user
       response.should have_selector("a", :href => "http://gravatar.com/emails",
-                                         :content => "change")
+                                    :content => "change")
     end
 
   end
@@ -149,7 +149,7 @@ describe UsersController do
       @user_id = @user.id
       test_sign_in(@user)
     end
-    
+
 
     describe "failure" do
 
@@ -173,7 +173,7 @@ describe UsersController do
 
       before do
         @attr = { :name => "ehsan valizadeh", :email => "user@example.org",
-                  :password => "barbaz", :password_confirmation => "barbaz" }
+          :password => "barbaz", :password_confirmation => "barbaz" }
       end
 
       it "should change user's attributes" do
@@ -191,6 +191,29 @@ describe UsersController do
         flash[:success].should =~ /Updated/i
       end
 
+    end
+
+  end
+
+  describe "authentication of edit/update actions" do
+
+    before do
+      @user = Factory(:user)
+    end
+
+    it "should deny access to 'edit'" do
+      get :edit, :id => @user
+      response.should redirect_to(signin_path)
+    end
+
+    it "should deny access to 'update'" do
+      put :update, :id => @user, :user => {}
+      response.should redirect_to(signin_path)
+    end
+
+    it "should have a message for signing in" do
+      get :edit, :id => @user
+      flash[:notice].should =~ /sign in/i
     end
 
   end
