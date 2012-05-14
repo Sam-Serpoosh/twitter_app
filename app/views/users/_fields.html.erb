@@ -1,0 +1,21 @@
+<%= render 'shared/error_messages' %>
+
+<div class="field">
+  <%= form.label :name %> <br />
+  <%= form.text_field :name %>
+</div>
+
+<div class="field">
+  <%= form.label :email %> <br />
+  <%= form.text_field :email %>
+</div>
+
+<div class="field">
+  <%= form.label :password %> <br />
+  <%= form.password_field :password %>
+</div>
+
+<div class="field">
+  <%= form.label :password_confirmation, "Confirmation" %> <br />
+  <%= form.password_field :password_confirmation %>
+</div>

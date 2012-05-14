@@ -117,4 +117,82 @@ describe UsersController do
 
   end
 
+  describe "GET 'edit'" do
+    
+    before do 
+      @user = Factory(:user)
+      test_sign_in(@user)
+    end
+
+    it "should be successful" do
+      get :edit, :id => @user
+      response.should be_success
+    end
+
+    it "should have the right title" do
+      get :edit, :id => @user
+      response.should have_selector("title", :content => "Edit user")
+    end
+
+    it "should have a link to change gravatar" do
+      get :edit, :id => @user
+      response.should have_selector("a", :href => "http://gravatar.com/emails",
+                                         :content => "change")
+    end
+
+  end
+
+  describe "PUT 'update'" do
+
+    before do
+      @user = Factory(:user)
+      @user_id = @user.id
+      test_sign_in(@user)
+    end
+    
+
+    describe "failure" do
+
+      before do
+        @attr = { :name => "", :email => "", :password => "", :password_confirmation => "" }
+      end
+
+      it "should redner the edit page" do
+        put :update, :id => @user, :user => @attr
+        response.should render_template('edit')
+      end
+
+      it "should have the right title" do
+        put :update, :id => @user, :user => @attr
+        response.should have_selector("title", :content => "Edit user")
+      end
+
+    end
+
+    describe "success" do
+
+      before do
+        @attr = { :name => "ehsan valizadeh", :email => "user@example.org",
+                  :password => "barbaz", :password_confirmation => "barbaz" }
+      end
+
+      it "should change user's attributes" do
+        put :update, :id => @user, :user => @attr
+        updated_user = assigns(:user)
+        @user.reload
+        @user.id.should == @user_id
+        @user.name.should == "ehsan valizadeh" 
+        @user.email.should == "user@example.org" 
+        @user.encrypted_password.should == updated_user.encrypted_password
+      end
+
+      it "should have a flash message" do
+        put :update, :id => @user, :user => @attr
+        flash[:success].should =~ /Updated/i
+      end
+
+    end
+
+  end
+
 end
