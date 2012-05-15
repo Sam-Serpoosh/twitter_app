@@ -6,3 +6,9 @@ Factory.define :user do |user|
   user.password_confirmation "foobar"
 
 end #when the tests run this will automatically create this user into the database
+
+Factory.sequence :email do |n|
+
+  "person-#{n}@example.com"
+
+end
