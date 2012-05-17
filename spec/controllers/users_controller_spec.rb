@@ -52,6 +52,21 @@ describe UsersController do
                                            :content => "2")
       end
 
+      it "should not have delete links for non-admins" do
+        other_user = User.all.second
+        get :index
+        response.should_not have_selector("a", :href => user_path(other_user.id),
+                                           :content => "delete")
+      end
+
+      it "should have delete links for admins" do
+        @user.toggle!(:admin)
+        other_user = User.all.second
+        get :index
+        response.should have_selector("a", :href => user_path(other_user.id),
+                                           :content => "delete")
+      end
+
     end
 
   end
@@ -241,6 +256,61 @@ describe UsersController do
       it "should have a flash message" do
         put :update, :id => @user, :user => @attr
         flash[:success].should =~ /Updated/i
+      end
+
+    end
+
+  end
+
+  describe "DELETE 'destory'" do
+    
+    before do
+      @user = Factory(:user)
+    end
+
+    describe "non signed-in user" do
+
+      it "should deny access" do
+        delete :destroy, :id => @user
+        response.should redirect_to(signin_path)
+      end
+
+    end
+
+    describe "non-admin user" do
+
+      it "should protect the action" do
+        test_sign_in(@user)
+        delete :destroy, :id => @user
+        response.should redirect_to(root_path)
+      end
+
+    end
+
+    describe "admin user" do
+
+      before do
+        @admin = Factory(:user, :email => "admin@example.com", :admin => true)
+        test_sign_in(@admin)
+      end
+
+      it "should delete the user" do
+        lambda do
+          delete :destroy, :id => @user
+          flash[:success].should =~ /destroyed/i
+        end.should change(User, :count).by(-1)
+      end
+
+      it "should redirect to the users page" do
+        delete :destroy, :id => @user
+        response.should redirect_to(users_path) 
+      end
+
+      it "should not be able to delete itself" do
+        lambda do
+          delete :destroy, :id => @admin
+          response.should redirect_to(root_path)
+        end.should_not change(User, :count)
       end
 
     end
