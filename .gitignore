@@ -9,3 +9,4 @@ doc/app
 *~
 .DS_Store
 webrat.log
+config/database.yml
