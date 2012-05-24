@@ -197,6 +197,25 @@ describe User do
       end
     end
 
+    describe "status feed" do
+
+      it "shold have a feed" do
+        @user.should respond_to(:feed)
+      end
+
+      it "should include the user's microposts" do
+        @user.feed.should include(@mp1)
+        @user.feed.should include(@mp2)
+      end
+
+      it "should not include other user's microposts" do
+        other_user = Factory(:user, :email => Factory.next(:email))
+        other_micropost = other_user.microposts.create!(:content => "other user micropost")
+        @user.feed.should_not include(other_micropost)
+      end
+
+    end
+
   end
 
 end
