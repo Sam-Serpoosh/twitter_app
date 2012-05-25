@@ -2,4 +2,12 @@
   <td class="micropost">
     <%= render "shared/micropost_content_and_timestamp", :micropost => micropost %> 
   </td>
-</tr>
+  <% user = micropost.user rescue User.find(micropost.user_id) %>
+  <% if current_user?(user) %>
+    <td>
+      <%= link_to "delete", micropost, :method => :delete,
+        :confirm => "Your sure?",
+        :title => micropost.content %>
+    </td>
+  <% end %>
+  </tr>

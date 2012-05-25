@@ -8,4 +8,11 @@
     </span>
     <%= render "shared/micropost_content_and_timestamp", :micropost => feed_item %> 
   </td>
+  <% if current_user?(feed_item.user) %>
+  <td>
+    <%= link_to "delete", feed_item, :method => :delete,
+                                     :confirm => "Your sure?",
+                                     :title => feed_item.content %>
+  </td>
+  <% end %>
 </tr>
